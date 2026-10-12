@@ -1,0 +1,287 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Healthcare Analyst Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a patient-chart page — a clinical header strip, then stacked "chart sections" on faint graph-paper ruling */
+:root{
+  --bg:#f5f8f8; --surface:#ffffff; --ink:#14232b; --muted:#56676f; --rule:#d9e3e4;
+  --grid:rgba(20,90,100,.06); --accent:#0e6b74; --accent-soft:#e1f0f0; --amber:#a35d00; --amber-soft:#fbf0de;
+  --code-bg:#14232b; --code-fg:#d8ecec; --code-key:#7fd3d6; --code-str:#f2c27b;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f181c; --surface:#16232a; --ink:#e3eeef; --muted:#9db0b5; --rule:#26363d;
+  --grid:rgba(127,211,214,.05); --accent:#6cc9cd; --accent-soft:#173539; --amber:#f0b45e; --amber-soft:#33281a;
+  --code-bg:#0a1114; --code-fg:#d8ecec; --code-key:#7fd3d6; --code-str:#f2c27b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f181c; --surface:#16232a; --ink:#e3eeef; --muted:#9db0b5; --rule:#26363d;
+  --grid:rgba(127,211,214,.05); --accent:#6cc9cd; --accent-soft:#173539; --amber:#f0b45e; --amber-soft:#33281a;
+  --code-bg:#0a1114; --code-fg:#d8ecec; --code-key:#7fd3d6; --code-str:#f2c27b; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ph{background:var(--amber-soft);color:var(--amber);border-radius:3px;padding:0 4px}
+
+/* header strip */
+.strip{border-bottom:1px solid var(--rule);background:var(--surface)}
+.strip .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;justify-content:space-between;padding-block:12px}
+.strip nav{display:flex;flex-wrap:wrap;gap:4px 20px}
+.strip nav a{text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}
+.strip nav a:hover{color:var(--accent)}
+
+/* hero */
+.hero{padding-block:64px 48px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:700;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lede{font-size:1.2rem;color:var(--muted);max-width:34em;margin:20px 0 28px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:6px;border:1.5px solid var(--accent);font-size:15px}
+.btn.primary{background:var(--accent);color:var(--surface)}
+.btn.ghost{color:var(--accent)}
+.query{min-width:0;background:var(--code-bg);color:var(--code-fg);border-radius:10px;padding:18px 20px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto;box-shadow:0 12px 30px -18px rgba(0,0,0,.5)}
+.query .k{color:var(--code-key)} .query .s{color:var(--code-str)} .query .c{color:#7f9499}
+.query-cap{margin-top:10px;font-size:13px;color:var(--muted)}
+
+section{padding-block:56px;border-top:1px solid var(--rule)}
+.sec-head{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;margin-bottom:28px}
+.sec-head h2{font-size:2rem;font-weight:700}
+
+/* about */
+.about{display:grid;grid-template-columns:1.4fr 1fr;gap:40px}
+.about p{margin:0 0 14px;max-width:62ch}
+.facts{display:grid;gap:12px;align-content:start;margin:0}
+.facts div{display:grid;grid-template-columns:120px 1fr;gap:12px;border-bottom:1px dashed var(--rule);padding-bottom:10px}
+.facts dt{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.facts dd{margin:0;font-weight:600}
+
+/* projects */
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.proj{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.proj-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.status{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--amber-soft);color:var(--amber);white-space:nowrap}
+.status.done{background:var(--accent-soft);color:var(--accent)}
+.proj h3{font-size:1.3rem;font-weight:700}
+.proj .q{margin:0;color:var(--muted)}
+.proj .q b{color:var(--ink);font-weight:600}
+.meta{display:grid;gap:6px;font-size:14px;margin:0}
+.meta div{display:grid;grid-template-columns:72px 1fr;gap:10px}
+.meta dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.meta dd{margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.tags span{font-family:var(--mono);font-size:12px;border:1px solid var(--rule);border-radius:4px;padding:2px 7px;color:var(--muted)}
+.proj-links{display:flex;gap:16px;font-size:14px;font-weight:600}
+.proj-links span{color:var(--muted);font-weight:400}
+
+/* skills as lab report */
+.lab-scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:8px}
+table.lab{width:100%;border-collapse:collapse;min-width:560px;font-size:15px}
+.lab th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:12px 16px;border-bottom:2px solid var(--ink)}
+.lab td{padding:12px 16px;border-bottom:1px solid var(--rule);vertical-align:top}
+.lab tr:last-child td{border-bottom:0}
+.lab td:first-child{font-weight:600}
+.lab .flag{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.lab .flag.dev{color:var(--amber)}
+.lab-note{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:start}
+.contact p{max-width:52ch;margin:0 0 10px}
+.channels{display:grid;gap:10px}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:12px 16px;min-width:0}
+.ch div{min-width:0}
+.ch .v{font-weight:600;overflow-wrap:anywhere;user-select:all}
+.ch button{font:600 13px var(--body);color:var(--accent);background:transparent;border:1px solid var(--rule);border-radius:5px;padding:5px 10px;cursor:pointer;flex-shrink:0}
+.ch button:hover{border-color:var(--accent)}
+footer{border-top:1px solid var(--rule);padding-block:24px;font-size:13px;color:var(--muted)}
+
+@media (max-width:760px){
+  .hero .wrap,.about,.contact{grid-template-columns:1fr}
+  .projects{grid-template-columns:1fr}
+  .hero{padding-block:40px 32px}
+  section{padding-block:40px}
+  .facts div{grid-template-columns:100px 1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="strip">
+  <div class="wrap">
+    <span class="label"><span class="ph">Your Name</span> · Data Analyst, Healthcare</span>
+    <nav aria-label="Sections">
+      <a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="label">Data Analyst · Healthcare &amp; Public Health</p>
+        <h1>Turning patient and claims data into <em>better care decisions</em>.</h1>
+        <p class="lede">I use SQL, dashboards and plain-language reporting to answer the questions hospitals and health plans ask every day: who gets readmitted, where costs pile up, and which communities need support.</p>
+        <div class="cta">
+          <a class="btn primary" href="#projects">View projects</a>
+          <a class="btn ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div style="min-width:0">
+        <pre class="query"><span class="c">-- 30-day readmissions, the measure Medicare tracks</span>
+<span class="k">WITH</span> stays <span class="k">AS</span> (
+  <span class="k">SELECT</span> patient_id, admit_date, discharge_date,
+    <span class="k">LEAD</span>(admit_date) <span class="k">OVER</span> (
+      <span class="k">PARTITION BY</span> patient_id
+      <span class="k">ORDER BY</span> admit_date) <span class="k">AS</span> next_admit
+  <span class="k">FROM</span> encounters
+  <span class="k">WHERE</span> encounter_class = <span class="s">'inpatient'</span>
+)
+<span class="k">SELECT</span> <span class="k">ROUND</span>(100.0 * <span class="k">AVG</span>(
+  <span class="k">CASE WHEN</span> next_admit - discharge_date &lt;= 30
+       <span class="k">THEN</span> 1 <span class="k">ELSE</span> 0 <span class="k">END</span>), 1) <span class="k">AS</span> readmit_rate_pct
+<span class="k">FROM</span> stays;</pre>
+        <p class="query-cap">From Project 01. Window functions find each patient's next admission.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>About</h2><span class="label">Patient summary</span></div>
+      <div class="about">
+        <div>
+          <p><span class="ph">Write 2–3 sentences about your background.</span> For example: what you studied or did before, and what drew you to healthcare data.</p>
+          <p>I'm building a portfolio around the problems healthcare organizations care about most: avoidable readmissions, quality and cost of care, community health, and operational efficiency. Every project uses public or synthetic data, so no protected health information is involved.</p>
+          <p>I care about clear communication as much as correct queries. Each project ends with findings and recommendations written for a clinical or operations manager, not just a chart.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Focus</dt><dd>Healthcare &amp; public health analytics</dd></div>
+          <div><dt>Core tools</dt><dd>SQL, Excel, Tableau / Power BI</dd></div>
+          <div><dt>Learning</dt><dd>Python (pandas), advanced SQL</dd></div>
+          <div><dt>Based in</dt><dd><span class="ph">City, State</span></dd></div>
+          <div><dt>Open to</dt><dd>Entry-level data analyst roles</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head"><h2>Projects</h2><span class="label">4 in progress · public &amp; synthetic data only</span></div>
+      <div class="projects">
+
+        <article class="proj">
+          <div class="proj-top"><span class="label">Project 01</span><span class="status">In progress</span></div>
+          <h3>Hospital Readmission Analysis</h3>
+          <p class="q"><b>Question:</b> Which patients are most likely to be readmitted within 30 days, and what drives it?</p>
+          <dl class="meta">
+            <div><dt>Data</dt><dd>UCI Diabetes 130-US Hospitals / Synthea</dd></div>
+            <div><dt>Output</dt><dd>Risk-factor analysis + readmissions dashboard</dd></div>
+          </dl>
+          <div class="tags"><span>SQL</span><span>Window functions</span><span>CTEs</span><span>Tableau</span></div>
+          <div class="proj-links"><span>GitHub · Dashboard · Write-up: coming soon</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top"><span class="label">Project 02</span><span class="status">In progress</span></div>
+          <h3>Hospital Quality vs. Cost</h3>
+          <p class="q"><b>Question:</b> Do higher-cost hospitals in my state deliver better patient outcomes?</p>
+          <dl class="meta">
+            <div><dt>Data</dt><dd>CMS Care Compare + Medicare payment data</dd></div>
+            <div><dt>Output</dt><dd>Hospital comparison map and scatter analysis</dd></div>
+          </dl>
+          <div class="tags"><span>SQL joins</span><span>Data cleaning</span><span>Power BI</span></div>
+          <div class="proj-links"><span>GitHub · Dashboard · Write-up: coming soon</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top"><span class="label">Project 03</span><span class="status">In progress</span></div>
+          <h3>Community Chronic Disease Map</h3>
+          <p class="q"><b>Question:</b> Where are diabetes, obesity and hypertension rates highest, and how do they relate to income and insurance?</p>
+          <dl class="meta">
+            <div><dt>Data</dt><dd>CDC PLACES / BRFSS, Census ACS</dd></div>
+            <div><dt>Output</dt><dd>County-level population health dashboard</dd></div>
+          </dl>
+          <div class="tags"><span>Geospatial viz</span><span>Correlation</span><span>Tableau</span></div>
+          <div class="proj-links"><span>GitHub · Dashboard · Write-up: coming soon</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top"><span class="label">Project 04</span><span class="status">In progress</span></div>
+          <h3>Length of Stay &amp; Cost Drivers</h3>
+          <p class="q"><b>Question:</b> Which conditions and departments drive the longest stays and highest costs?</p>
+          <dl class="meta">
+            <div><dt>Data</dt><dd>Synthea synthetic EHR records</dd></div>
+            <div><dt>Output</dt><dd>Operations report with recommendations</dd></div>
+          </dl>
+          <div class="tags"><span>Database design</span><span>SQL</span><span>Python</span><span>Excel</span></div>
+          <div class="proj-links"><span>GitHub · Dashboard · Write-up: coming soon</span></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head"><h2>Skills</h2><span class="label">Results report</span></div>
+      <div class="lab-scroll">
+        <table class="lab">
+          <thead><tr><th>Skill</th><th>What I use it for</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>SQL</td><td>Joins, CTEs, window functions, correlated subqueries, conditional aggregation</td><td class="flag">Proficient</td></tr>
+            <tr><td>Excel</td><td>Pivot tables, XLOOKUP, data cleaning, quick reporting</td><td class="flag">Proficient</td></tr>
+            <tr><td>Tableau / Power BI</td><td>Interactive dashboards for clinical and operations audiences</td><td class="flag dev">Developing</td></tr>
+            <tr><td>Python (pandas)</td><td>Cleaning large files, exploratory analysis</td><td class="flag dev">Developing</td></tr>
+            <tr><td>Healthcare data</td><td>ICD-10 and CPT codes, claims vs. EHR data, readmission and LOS measures, HIPAA basics</td><td class="flag dev">Developing</td></tr>
+            <tr><td>Communication</td><td>Plain-language findings and recommendations for non-technical stakeholders</td><td class="flag">Proficient</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lab-note">Update the levels as you go. Honest ratings read better to hiring managers than "expert" everywhere.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head"><h2>Contact</h2><span class="label">Referrals welcome</span></div>
+      <div class="contact">
+        <div>
+          <p>I'm looking for entry-level data analyst roles in hospitals, health plans, and public health organizations. I'd be glad to walk through any project in detail.</p>
+          <p class="lab-note">Résumé available on request.</p>
+        </div>
+        <div class="channels">
+          <div class="ch"><div><div class="label">Email</div><div class="v" id="v-email">your.email@example.com</div></div><button type="button" data-copy="v-email">Copy</button></div>
+          <div class="ch"><div><div class="label">LinkedIn</div><div class="v" id="v-li">linkedin.com/in/your-profile</div></div><button type="button" data-copy="v-li">Copy</button></div>
+          <div class="ch"><div><div class="label">GitHub</div><div class="v" id="v-gh">github.com/Admire5</div></div><button type="button" data-copy="v-gh">Copy</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">All projects use public or synthetic data. No protected health information is used or shared.</div></footer>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var el=document.getElementById(btn.dataset.copy), t=el.textContent;
+    function done(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy'},1500)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected'}
+    try{navigator.clipboard.writeText(t).then(done,fallback)}catch(e){fallback()}
+  });
+});
+</script>
+
+</body></html>
